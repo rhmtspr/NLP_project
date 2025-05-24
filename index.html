@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klasifikasi Spam</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+  <h2>Cek Email Spam</h2>
+  <textarea id="emailText" name="emailText" rows="6", cols="50" placeholder="Masukkan pesan email di sini..."></textarea><br>
+  <button onclick="checkSpam()">Check</button>
+  <p id="result"></p>
+</body>
+<script>
+  async function checkSpam() {
+    const message = document.getElementById("emailText").value;
+    const response = await fetch("http://127.0.0.1:8000/predict", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({message: message})
+    });
+
+    const data = await response.json();
+    document.getElementById("result").innerHTML = `
+    <strong>Hasil:</strong> ${data.prediction}<br>
+    <strong>Spam Confidence:</strong> ${data.spam_probability}%<br>
+    <strong>Ham Confidence:</strong> ${data.ham_probability}%
+  `;
+  }
+</script>
+</html>
