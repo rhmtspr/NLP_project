@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
@@ -27,6 +27,6 @@ async def predict(data: EmailRequest):
     ham_prob = round(proba[0] * 100, 2)
     return {
         "prediction": prediction,
-        "spam_probability": spam_prob,
-        "ham_probability": ham_prob,
+        "spam_prob": spam_prob,
+        "ham_prob": ham_prob,
         }

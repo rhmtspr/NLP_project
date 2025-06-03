@@ -6,13 +6,70 @@
   <title>Klasifikasi Spam</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-  <h2>Cek Email Spam</h2>
-  <textarea id="emailText" name="emailText" rows="6", cols="50" placeholder="Masukkan pesan email di sini..."></textarea><br>
-  <button onclick="checkSpam()">Check</button>
-  <p id="result"></p>
+<body class="bg-violet-600 flex justify-center items-center">
+  <div class="text-center mt-10 flex justify-center items-center">
+    <div>
+      <div class="text-center max-w-4xl mb-3">
+        <div class="bg-white p-2 mb-3 rounded-lg">
+          <h1 class="text-2xl font-bold">Contoh Input Email</h1>
+          <p class="mb-4 text-sm">Contoh input email spam dan ham yang bisa digunakan untuk prediksi (data diambil dari dataset uji)</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="relative bg-gray-100 p-3 rounded-lg shadow">
+            <div class="max-h-32 overflow-y-auto mb-2">
+              <p class="text-left text-sm">
+                wawancara telepon enron research group good morning richard resume diteruskan vince kaminski kelompok riset wawancara telepon sesuka tolong tanggal tersedia mengoordinasikan jadwal nomor telepon hubungi wawancara telepon jam pewawancara direktur pelaksana vince kaminski wakil presiden penelitian stinson gibner penelitian vasant shanbhogue wakil presiden penelitian terima kasih richard berharap mendengar salam koordinator administrasi shirley crenshaw enron research group email shirley crenshaw enron com
+              </p>
+            </div>
+            <button class="font-bold mt-2 bg-violet-500 text-white text-sm px-3 py-1 rounded hover:bg-violet-600" onclick="copyToClipboard(this)">Copy</button>
+          </div>
+          <div class="relative bg-gray-100 p-3 rounded-lg shadow">
+            <div class="max-h-32 overflow-y-auto mb-2">
+              <p class="text-left text-sm">
+                perangkat lunak grafis tersedia versi oem murah selamat pagi menawarkan paket oem terbaru grafik perangkat lunak publishinq corel macromedia adobe adobe photoshop cs macromedia studio mx adobe acrobat profesiai adobe premiere pro corei designer quickbooks profestiveai edition adobe paqemaker xara x vl audisi adobe discreet studio max adobe goiive cs adobe effects standar adobe premiere elements corel painter lx adobe lilustrator cs adobe lndesign cs adobe creative suite adobe framemaker ulead cool studio produksi aiias motion buiider profestiveai quicken premier home biz adobe photoshop eiements adobe premiere pro pelajari hormat carson
+              </p>
+            </div>
+            <button class="font-bold mt-2 bg-violet-500 text-white text-sm px-3 py-1 rounded hover:bg-violet-600" onclick="copyToClipboard(this)">Copy</button>
+          </div>
+          <div class="relative bg-gray-100 p-3 rounded-lg shadow">
+            <div class="max-h-32 overflow-y-auto mb-2">
+              <p class="text-left text-sm">
+                peluang penangguhan saham terbatas pengingat pesan kesempatan menunda stok terbatas dirilis enron corp rencana penangguhan enron expat services inc rencana penangguhan ekspatriat informasi kesempatan dikirimkan minggu berpartisipasi program silakan lengkapi formulir pemilihan secepat formulir dikembalikan perhatian ebl faksimili kantor minggu harap ragu menghubungi renee ratcliff mary mckendree terima kasih kim bolton kompensasi eksekutif
+              </p>
+            </div>
+            <button class="font-bold mt-2 bg-violet-500 text-white text-sm px-3 py-1 rounded hover:bg-violet-600" onclick="copyToClipboard(this)">Copy</button>
+          </div>
+          <div class="relative bg-gray-100 p-3 rounded-lg shadow">
+            <div class="max-h-32 overflow-y-auto mb-2">
+              <p class="text-left text-sm">
+                www kirkbridebuildings com halo mengunjungi www kirkbridebuildings com perhatikan situs web terdaftar mesin pencari layanan orang mengunjungi situs web meningkat seekercenter teknologi unik langsung mengirimkan situs web mesin pencari direktori rendah biaya efektif mengiklankan situs detail silakan pergi seekercenter net paparan maksimum situs web mendengarnya darimu salam vanessa lintner sales marketing www mencari pusat net menerima email memilih menerima penawaran khusus situs web mitra menerima email kesalahan menerima penawaran khusus tambahan silakan masukkan alamat email klik tombol hapus
+              </p>
+            </div>
+            <button class="font-bold mt-2 bg-violet-500 text-white text-sm px-3 py-1 rounded hover:bg-violet-600" onclick="copyToClipboard(this)">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg p-4 mb-5">
+        <h2 class="text-3xl font-bold">Spam Buster</h2>
+        <textarea class="border-2 border-violet-600 my-3 p-2 rounded-lg" id="emailText" name="emailText" rows="6", cols="50" placeholder="Masukkan pesan email di sini..."></textarea><br>
+        <button class="text-white font-bold bg-violet-600 rounded-sm px-3 py-1" onclick="checkSpam()">Check</button>
+        <p id="result"></p>
+      </div>
+    </div>
+  </div>
 </body>
 <script>
+  function copyToClipboard(button) {
+    let paragraph = button.parentElement.querySelector("p").textContent;
+    
+    paragraph = paragraph.replace(/\s+/g, " ").trim();
+
+    navigator.clipboard.writeText(paragraph).then(() => {
+      button.textContet = "Copied!";
+      setTimeout(() => (button.textContent = "Copy"), 1500);
+    });
+  }
+
   async function checkSpam() {
     const message = document.getElementById("emailText").value;
     const response = await fetch("http://127.0.0.1:8000/predict", {
@@ -24,8 +81,8 @@
     const data = await response.json();
     document.getElementById("result").innerHTML = `
     <strong>Hasil:</strong> ${data.prediction}<br>
-    <strong>Spam Confidence:</strong> ${data.spam_probability}%<br>
-    <strong>Ham Confidence:</strong> ${data.ham_probability}%
+    <strong>Presentase Spam:</strong> ${data.spam_prob}<br>
+    <strong>Presentase Ham:</strong> ${data.ham_prob}<br>
   `;
   }
 </script>
